@@ -22,7 +22,9 @@ int main(int argc, char* argv[])
     struct pcap_pkthdr *header;
 
 
-    char errbuf[100] , *devname ; /*, devs[100][100];
+    char errbuf[100] , *devname ; 
+
+    /*, devs[100][100];
     int count = 1 , n;
      
    

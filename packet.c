@@ -13,10 +13,10 @@
 #include "packet.h"
 
 struct sockaddr_in source,dest;
-int tcp=0,i,j; 
+//int tcp=0,i,j; 
 
 
-void process_packet(u_char *args, const struct pcap_pkthdr *header, const u_char *buffer)
+/*void process_packet(u_char *args, const struct pcap_pkthdr *header, const u_char *buffer)
 {
     int size = header->len;
      
@@ -32,7 +32,7 @@ void process_packet(u_char *args, const struct pcap_pkthdr *header, const u_char
         default:          
             break;
     }    
-}
+}*/
  
 void print_ethernet_header(const u_char *Buffer, int Size)
 {
@@ -47,7 +47,8 @@ void print_ip_header(const u_char * Buffer, int Size)
 {
     print_ethernet_header(Buffer , Size);
    
-    unsigned short iphdrlen;
+    uint16_t iphdrlen;
+    char sip[16],dip[16];
          
     struct iphdr *iph = (struct iphdr *)(Buffer  + sizeof(struct ethhdr) );
     iphdrlen =iph->ihl*4;
@@ -57,15 +58,18 @@ void print_ip_header(const u_char * Buffer, int Size)
      
     memset(&dest, 0, sizeof(dest));
     dest.sin_addr.s_addr = iph->daddr;
+
+    inet_ntop(AF_INET, &source.sin_addr, sip,sizeof(sip));
+    inet_ntop(AF_INET, &dest.sin_addr,   dip,sizeof(dip));
      
     printf("\n");
-    printf("IP |-Source IP        : %s\n" , inet_ntoa(source.sin_addr) );
-    printf("TP |-Destination IP   : %s\n" , inet_ntoa(dest.sin_addr) );
+    printf("IP |-Source IP        : %s\n" , sip );
+    printf("TP |-Destination IP   : %s\n" , dip );
 }
  
 void print_tcp_packet(const u_char * Buffer, int Size)
 {
-    unsigned short iphdrlen;
+    uint16_t iphdrlen;
      
     struct iphdr *iph = (struct iphdr *)( Buffer  + sizeof(struct ethhdr) );
     iphdrlen = iph->ihl*4;
