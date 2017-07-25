@@ -53,6 +53,12 @@ int main(int argc, char* argv[])
     scanf("%d" , &n);
     devname = devs[n];*/
 
+    if(argc < 2)
+    {
+        printf("No parameter input.\n")
+        eixt(1);
+    }
+
     devname = argv[1];
 
 
